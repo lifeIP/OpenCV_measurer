@@ -21,6 +21,9 @@ class Thread(QThread):
         self.tab_id = id
 
     def run(self):
+        self.tab_id = 0
+        self.width = 1
+        self.height = 1
         self.loadingMSG.emit(0)
         cap0 = cv2.VideoCapture(0)
         cap0.set(cv2.CAP_PROP_FRAME_WIDTH, 2560)
@@ -98,6 +101,33 @@ class Thread(QThread):
                 #p_1 = convertToQtFormat_1.scaled(640, 480, Qt.KeepAspectRatio)
                 self.changePixmap1.emit(convertToQtFormat_1)
         
+
+class LoadingPageWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        print("Инит")
+
+class MainPageWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        print("Инит")
+
+
+class ShadowViewPageWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        print("Инит")
+    
+
 
 class App(QWidget):
     def __init__(self):
