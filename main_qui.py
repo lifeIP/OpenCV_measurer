@@ -107,61 +107,7 @@ class LoadingPageWidget(QWidget):
         super().__init__()
         self.initUI()
 
-    def initUI(self):
-        print("Инит")
-
-class MainPageWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
-
-    def initUI(self):
-        print("Инит")
-
-
-class ShadowViewPageWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
-
-    def initUI(self):
-        print("Инит")
-    
-
-
-class App(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.title = 'PyQt5 Video'
-        self.left = 100
-        self.top = 100
-        self.width = 640
-        self.height = 480
-        self.initUI()
-
-    @pyqtSlot(QImage)
-    def setImage0(self, image):
-        self.label_shadow_0.setPixmap(QPixmap.fromImage(image))
-
-    @pyqtSlot(QImage)
-    def setImage1(self, image):
-        self.label_shadow_1.setPixmap(QPixmap.fromImage(image))
-
-    @pyqtSlot(QImage)
-    def setImage2(self, image):
-        self.label_shadow_2.setPixmap(QPixmap.fromImage(image))
-
-    @pyqtSlot(QImage)
-    def setImage3(self, image):
-        self.label_shadow_3.setPixmap(QPixmap.fromImage(image))
-
-    @pyqtSlot(int)
-    def setDelata_x(self, width):
-        self.label_shadow_0_delta_x.setText("ΔX: " + str(width))
-    
-    @pyqtSlot(int)
-    def setDelata_y(self, width):
-        self.label_shadow_1_delta_y.setText("ΔY: " + str(width))
+    changeAnotherPage = pyqtSignal(int)
 
     @pyqtSlot(int)
     def setLoadingMSG(self, msg_id):
@@ -174,13 +120,58 @@ class App(QWidget):
         elif msg_id == 2:
             self.statusLabel.setText("Приложение готово к работе")
             self.loadingPageProgressBar.setValue(99)
-            self.stackedLayout.setCurrentIndex(1)
-
+            self.changeAnotherPage.emit(1)
 
     def initUI(self):
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
+        self.statusLabel = QLabel()
+
+        self.statusLabel.setText("Status")
+        self.statusLabel.setStyleSheet("QLabel{font-size: 18pt;}")
+        self.statusLabel.setAlignment(Qt.AlignCenter)
+
+        self.loadingPageProgressBar = QProgressBar()
+        self.loadingPageProgressBar.setGeometry(30, 40, 200, 25) 
+
+        self.v_box_layout_loading_page = QVBoxLayout()
+        self.v_box_layout_loading_page.addWidget(self.statusLabel)
+        self.v_box_layout_loading_page.addWidget(self.loadingPageProgressBar)
+
+        self.setLayout(self.v_box_layout_loading_page)
+
+
+class MainPageWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        print("Инит")
+
+
+class ShadowViewPageWidget(QWidget):
+    def __init__(self, width, height):
+        super().__init__()
+        self.width = width
+        self.height = height
+        self.initUI()
+
+    @pyqtSlot(QImage)
+    def setImage0(self, image):
+        self.label_shadow_0.setPixmap(QPixmap.fromImage(image))
+
+    @pyqtSlot(QImage)
+    def setImage1(self, image):
+        self.label_shadow_1.setPixmap(QPixmap.fromImage(image))
+
+    @pyqtSlot(int)
+    def setDelata_x(self, width):
+        self.label_shadow_0_delta_x.setText("ΔX: " + str(width))
     
+    @pyqtSlot(int)
+    def setDelata_y(self, width):
+        self.label_shadow_1_delta_y.setText("ΔY: " + str(width))
+
+    def initUI(self):
         # Первая вкладка +++++++++++++++++++++++++++++++++++++++++++++++++++
         # Первая картинка ++++++++++++++++++++++++++++++++++++++++++++++++++
         self.label_shadow_0 = QLabel()
@@ -209,7 +200,59 @@ class App(QWidget):
         # Вторая картинка --------------------------------------------------
         # Первая вкладка ---------------------------------------------------
 
+        self.v_box_layout_0 = QVBoxLayout()
+        self.v_box_layout_0.addLayout(self.h_box_layout_0)
+        self.v_box_layout_0.addLayout(self.h_box_layout_1)
+        
+        self.setLayout(self.v_box_layout_0)
 
+
+class OriginalViewPageWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        print("Инит")
+
+class PageManagerWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        print("Инит")
+
+
+class App(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.title = 'PyQt5 Video'
+        self.left = 100
+        self.top = 100
+        self.width = 640
+        self.height = 480
+        self.initUI()
+
+    @pyqtSlot(QImage)
+    def setImage2(self, image):
+        self.label_shadow_2.setPixmap(QPixmap.fromImage(image))
+
+    @pyqtSlot(QImage)
+    def setImage3(self, image):
+        self.label_shadow_3.setPixmap(QPixmap.fromImage(image))
+
+    
+    @pyqtSlot(int)
+    def setAnotherStackPage(self, page_id):
+        self.stackedLayout.setCurrentIndex(page_id)
+
+
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+    
+        
         # Вторая вкладка +++++++++++++++++++++++++++++++++++++++++++++++++++
         self.label_shadow_2 = QLabel()
         self.label_shadow_2.setMinimumSize(int(self.width * 0.95), int(self.height * 0.5))
@@ -219,20 +262,15 @@ class App(QWidget):
         # Вторая вкладка ---------------------------------------------------
 
 
+        self.shadowViewPageWidget = ShadowViewPageWidget(self.width, self.height)
+
         # TabWidget ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         v_box_layout_tabs = QVBoxLayout()
         tabs = QTabWidget()
-        tab0 = QWidget()
         tab1 = QWidget()
-        # Add tabs
-        tabs.addTab(tab0,"Тени")
-        tabs.addTab(tab1,"Исходники")
 
         # Create first tab
-        tab0.v_box_layout_tab_0 = QVBoxLayout()
-        tab0.v_box_layout_tab_0.addLayout(self.h_box_layout_0)
-        tab0.v_box_layout_tab_0.addLayout(self.h_box_layout_1)
-        tab0.setLayout(tab0.v_box_layout_tab_0)
+        tab0 = self.shadowViewPageWidget
 
         # Create second tab
         tab1.v_box_layout_tab_1 = QVBoxLayout()
@@ -243,38 +281,33 @@ class App(QWidget):
         v_box_layout_tabs.addWidget(tabs)
         # TabWidget --------------------------------------------------------
 
+        self.loadingPageWidget = LoadingPageWidget()
 
-        self.statusLabel = QLabel()
-        self.statusLabel.setText("Status")
-        self.statusLabel.setStyleSheet("QLabel{font-size: 18pt;}")
-        self.statusLabel.setAlignment(Qt.AlignCenter)
-
-        self.loadingPageProgressBar = QProgressBar()
-        self.loadingPageProgressBar.setGeometry(30, 40, 200, 25) 
-
-
-        self.v_box_layout_loading_page = QVBoxLayout()
-        self.v_box_layout_loading_page.addWidget(self.statusLabel)
-        self.v_box_layout_loading_page.addWidget(self.loadingPageProgressBar)
-
-        self.loadingPageWidget = QWidget()
         self.mainPageWidget = QWidget()
-        self.loadingPageWidget.setLayout(self.v_box_layout_loading_page)
         self.mainPageWidget.setLayout(v_box_layout_tabs)
 
         self.stackedLayout = QStackedLayout()
         self.stackedLayout.setCurrentIndex(0)
         self.stackedLayout.addWidget(self.loadingPageWidget)
         self.stackedLayout.addWidget(self.mainPageWidget)
+        self.loadingPageWidget.changeAnotherPage.connect(self.setAnotherStackPage)
+
+        
+        # Add tabs
+        tabs.addTab(tab0,"Тени")
+        tabs.addTab(tab1,"Исходники")
 
         th = Thread(self)
-        th.changePixmap0.connect(self.setImage0)
-        th.changePixmap1.connect(self.setImage1)
+        th.changePixmap0.connect(self.shadowViewPageWidget.setImage0)
+        th.changePixmap1.connect(self.shadowViewPageWidget.setImage1)
         th.changePixmap2.connect(self.setImage2)
         th.changePixmap3.connect(self.setImage3)
-        th.objectWidth0.connect(self.setDelata_x)
-        th.objectWidth1.connect(self.setDelata_y)
-        th.loadingMSG.connect(self.setLoadingMSG)
+        th.objectWidth0.connect(self.shadowViewPageWidget.setDelata_x)
+        th.objectWidth1.connect(self.shadowViewPageWidget.setDelata_y)
+
+        th.loadingMSG.connect(self.loadingPageWidget.setLoadingMSG)
+        
+        
         tabs.currentChanged.connect(th.setTabId)
 
 
