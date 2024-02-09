@@ -149,7 +149,7 @@ class MainPageWidget(QWidget):
 
 
 class ShadowViewPageWidget(QWidget):
-    def __init__(self, width, height):
+    def __init__(self, width:int, height:int):
         super().__init__()
         self.width = width
         self.height = height
@@ -172,6 +172,10 @@ class ShadowViewPageWidget(QWidget):
         self.label_shadow_1_delta_y.setText("ΔY: " + str(width))
 
     def initUI(self):
+        # Главная вкладка ++++++++++++++++++++++++++++++++++++++++++++++++++
+        
+        # Главная вкладка --------------------------------------------------
+
         # Первая вкладка +++++++++++++++++++++++++++++++++++++++++++++++++++
         # Первая картинка ++++++++++++++++++++++++++++++++++++++++++++++++++
         self.label_shadow_0 = QLabel()
@@ -208,20 +212,88 @@ class ShadowViewPageWidget(QWidget):
 
 
 class OriginalViewPageWidget(QWidget):
-    def __init__(self):
+    def __init__(self, width:int, height:int):
+        self.width = width
+        self.height = height
         super().__init__()
         self.initUI()
 
+    @pyqtSlot(QImage)
+    def setImage2(self, image):
+        self.label_shadow_2.setPixmap(QPixmap.fromImage(image))
+
+    @pyqtSlot(QImage)
+    def setImage3(self, image):
+        self.label_shadow_3.setPixmap(QPixmap.fromImage(image))
+
     def initUI(self):
-        print("Инит")
+        # Вторая вкладка +++++++++++++++++++++++++++++++++++++++++++++++++++
+        self.label_shadow_2 = QLabel()
+        self.label_shadow_2.setMinimumSize(int(self.width * 0.95), int(self.height * 0.5))
+        self.label_shadow_3 = QLabel()
+        self.label_shadow_3.setMinimumSize(int(self.width * 0.95), int(self.height * 0.5))
+        # Вторая вкладка ---------------------------------------------------
+        self.v_box_layout_tab_1 = QVBoxLayout()
+        self.v_box_layout_tab_1.addWidget(self.label_shadow_2)
+        self.v_box_layout_tab_1.addWidget(self.label_shadow_3)
+        self.setLayout(self.v_box_layout_tab_1)
+
 
 class PageManagerWidget(QWidget):
-    def __init__(self):
+    def __init__(self, width:int, height:int):
+        self.width = width
+        self.height = height
         super().__init__()
         self.initUI()
 
+    @pyqtSlot(int)
+    def setAnotherStackPage(self, page_id):
+        self.stackedLayout.setCurrentIndex(page_id)
+
     def initUI(self):
-        print("Инит")
+        
+        th = Thread(self)
+        self.loadingPageWidget = LoadingPageWidget()
+        self.shadowViewPageWidget = ShadowViewPageWidget(self.width, self.height)
+        self.originalViewPageWidget = OriginalViewPageWidget(self.width, self.height)
+
+
+        # TabWidget ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        tabs = QTabWidget()
+        tab0 = self.shadowViewPageWidget
+        tab1 = self.originalViewPageWidget
+        
+        v_box_layout_tabs = QVBoxLayout()
+        v_box_layout_tabs.addWidget(tabs)
+        
+        # Add tabs
+        tabs.addTab(tab0,"Тени")
+        tabs.addTab(tab1,"Исходники")
+        # TabWidget --------------------------------------------------------
+
+        self.tabPagesWidget = QWidget()
+        self.tabPagesWidget.setLayout(v_box_layout_tabs)
+
+        self.stackedLayout = QStackedLayout()
+        self.stackedLayout.setCurrentIndex(0)
+        self.stackedLayout.addWidget(self.loadingPageWidget)
+        self.stackedLayout.addWidget(self.tabPagesWidget)
+        
+        th.changePixmap0.connect(self.shadowViewPageWidget.setImage0)
+        th.changePixmap1.connect(self.shadowViewPageWidget.setImage1)
+        th.changePixmap2.connect(self.originalViewPageWidget.setImage2)
+        th.changePixmap3.connect(self.originalViewPageWidget.setImage3)
+        th.objectWidth0.connect(self.shadowViewPageWidget.setDelata_x)
+        th.objectWidth1.connect(self.shadowViewPageWidget.setDelata_y)
+        self.loadingPageWidget.changeAnotherPage.connect(self.setAnotherStackPage)
+
+        th.loadingMSG.connect(self.loadingPageWidget.setLoadingMSG)
+    
+        tabs.currentChanged.connect(th.setTabId)
+
+        self.setLayout(self.stackedLayout)
+        
+        th.start()
 
 
 class App(QWidget):
@@ -234,87 +306,16 @@ class App(QWidget):
         self.height = 480
         self.initUI()
 
-    @pyqtSlot(QImage)
-    def setImage2(self, image):
-        self.label_shadow_2.setPixmap(QPixmap.fromImage(image))
-
-    @pyqtSlot(QImage)
-    def setImage3(self, image):
-        self.label_shadow_3.setPixmap(QPixmap.fromImage(image))
-
-    
-    @pyqtSlot(int)
-    def setAnotherStackPage(self, page_id):
-        self.stackedLayout.setCurrentIndex(page_id)
-
-
     def initUI(self):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
-    
         
-        # Вторая вкладка +++++++++++++++++++++++++++++++++++++++++++++++++++
-        self.label_shadow_2 = QLabel()
-        self.label_shadow_2.setMinimumSize(int(self.width * 0.95), int(self.height * 0.5))
-        self.label_shadow_3 = QLabel()
-        self.label_shadow_3.setMinimumSize(int(self.width * 0.95), int(self.height * 0.5))
+        self.pageManagerWidget = PageManagerWidget(self.width, self.height)
         
-        # Вторая вкладка ---------------------------------------------------
-
-
-        self.shadowViewPageWidget = ShadowViewPageWidget(self.width, self.height)
-
-        # TabWidget ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        v_box_layout_tabs = QVBoxLayout()
-        tabs = QTabWidget()
-        tab1 = QWidget()
-
-        # Create first tab
-        tab0 = self.shadowViewPageWidget
-
-        # Create second tab
-        tab1.v_box_layout_tab_1 = QVBoxLayout()
-        tab1.v_box_layout_tab_1.addWidget(self.label_shadow_2)
-        tab1.v_box_layout_tab_1.addWidget(self.label_shadow_3)
-        tab1.setLayout(tab1.v_box_layout_tab_1)
-
-        v_box_layout_tabs.addWidget(tabs)
-        # TabWidget --------------------------------------------------------
-
-        self.loadingPageWidget = LoadingPageWidget()
-
-        self.mainPageWidget = QWidget()
-        self.mainPageWidget.setLayout(v_box_layout_tabs)
-
-        self.stackedLayout = QStackedLayout()
-        self.stackedLayout.setCurrentIndex(0)
-        self.stackedLayout.addWidget(self.loadingPageWidget)
-        self.stackedLayout.addWidget(self.mainPageWidget)
-        self.loadingPageWidget.changeAnotherPage.connect(self.setAnotherStackPage)
-
+        self.v_box_app_layout = QVBoxLayout()
+        self.v_box_app_layout.addWidget(self.pageManagerWidget)
         
-        # Add tabs
-        tabs.addTab(tab0,"Тени")
-        tabs.addTab(tab1,"Исходники")
-
-        th = Thread(self)
-        th.changePixmap0.connect(self.shadowViewPageWidget.setImage0)
-        th.changePixmap1.connect(self.shadowViewPageWidget.setImage1)
-        th.changePixmap2.connect(self.setImage2)
-        th.changePixmap3.connect(self.setImage3)
-        th.objectWidth0.connect(self.shadowViewPageWidget.setDelata_x)
-        th.objectWidth1.connect(self.shadowViewPageWidget.setDelata_y)
-
-        th.loadingMSG.connect(self.loadingPageWidget.setLoadingMSG)
-        
-        
-        tabs.currentChanged.connect(th.setTabId)
-
-
-        self.setLayout(self.stackedLayout)
-        
-
-        th.start()
+        self.setLayout(self.v_box_app_layout)
         self.show()
 
 
