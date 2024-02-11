@@ -10,19 +10,18 @@ class DrawCircle(QWidget):
     def paintEvent(self, event):
         paint = QPainter()
         paint.begin(self)
+        print("begin")
         # optional
         paint.setRenderHint(QPainter.Antialiasing)
-        # make a white drawing background
-        paint.setBrush(Qt.white)
         
-        paint.drawRect(event.rect())
-        # for circle make the ellipse radii match
         radx = 100
         rady = 100
-        # draw red circles
-        paint.setPen(Qt.red)
+
+        paint.setPen(QPen(Qt.black, 2, Qt.SolidLine))
         center = QPoint(120, 120)
         # optionally fill each circle yellow
-        paint.setBrush(Qt.blue)
+        paint.setBrush(Qt.white)
         paint.drawEllipse(center, radx, rady)
+
+        print("end")
         paint.end()

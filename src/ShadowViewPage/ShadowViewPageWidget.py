@@ -10,21 +10,15 @@ class ShadowViewPageWidget(QWidget):
         self.height = height
         self.initUI()
 
-    @pyqtSlot(QImage)
-    def setImage0(self, image):
+    @pyqtSlot(QImage, QImage)
+    def setImages(self, image: QImage, image2: QImage):
         self.label_shadow_0.setPixmap(QPixmap.fromImage(image))
+        self.label_shadow_1.setPixmap(QPixmap.fromImage(image2))
 
-    @pyqtSlot(QImage)
-    def setImage1(self, image):
-        self.label_shadow_1.setPixmap(QPixmap.fromImage(image))
-
-    @pyqtSlot(int)
-    def setDelata_x(self, width):
-        self.label_shadow_0_delta_x.setText("ΔX: " + str(width))
-    
-    @pyqtSlot(int)
-    def setDelata_y(self, width):
-        self.label_shadow_1_delta_y.setText("ΔY: " + str(width))
+    @pyqtSlot(int, int)
+    def setDelata_x_and_y(self, width_x: int, width_y: int):
+        self.label_shadow_0_delta_x.setText("ΔX: " + str(width_x))
+        self.label_shadow_1_delta_y.setText("ΔY: " + str(width_y))
 
     def initUI(self):
         # Первая вкладка +++++++++++++++++++++++++++++++++++++++++++++++++++

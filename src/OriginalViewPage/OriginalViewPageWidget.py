@@ -9,13 +9,10 @@ class OriginalViewPageWidget(QWidget):
         super().__init__()
         self.initUI()
 
-    @pyqtSlot(QImage)
-    def setImage2(self, image):
+    @pyqtSlot(QImage, QImage)
+    def setImages(self, image: QImage, image2: QImage):
         self.label_shadow_2.setPixmap(QPixmap.fromImage(image))
-
-    @pyqtSlot(QImage)
-    def setImage3(self, image):
-        self.label_shadow_3.setPixmap(QPixmap.fromImage(image))
+        self.label_shadow_3.setPixmap(QPixmap.fromImage(image2))
 
     def initUI(self):
         # Вторая вкладка +++++++++++++++++++++++++++++++++++++++++++++++++++
