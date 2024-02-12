@@ -59,6 +59,7 @@ class Thread(QThread):
                     crop_img_1 = frame1[res_h_1:res_h_1 + 30, 0:0 + width_1]
                     crop_img_1 = cv2.cvtColor(crop_img_1, cv2.COLOR_BGR2GRAY)
 
+                    
                     ret_0, binary_threshold_0 = cv2.threshold(crop_img_0, 127, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
                     ret_1, binary_threshold_1 = cv2.threshold(crop_img_1, 127, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 

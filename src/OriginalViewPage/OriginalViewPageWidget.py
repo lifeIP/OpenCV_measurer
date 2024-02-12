@@ -18,8 +18,11 @@ class OriginalViewPageWidget(QWidget):
         # Вторая вкладка +++++++++++++++++++++++++++++++++++++++++++++++++++
         self.label_shadow_2 = QLabel()
         self.label_shadow_2.setMinimumSize(int(self.width * 0.95), int(self.height * 0.5))
+        self.label_shadow_2.setScaledContents(True)
+        
         self.label_shadow_3 = QLabel()
         self.label_shadow_3.setMinimumSize(int(self.width * 0.95), int(self.height * 0.5))
+        self.label_shadow_3.setScaledContents(True)
         # Вторая вкладка ---------------------------------------------------
         self.v_box_layout_tab_1 = QVBoxLayout()
         self.v_box_layout_tab_1.addWidget(self.label_shadow_2)
