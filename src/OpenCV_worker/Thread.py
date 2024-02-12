@@ -76,7 +76,6 @@ class Thread(QThread):
                     bytesPerLine_1 = ch1 * w1
                     convertToQtFormat_1 = QImage(rgbImage_1.data, w1, h1, bytesPerLine_1, QImage.Format_RGB888)
                     
-                    
                     self.changeShadowPixmaps.emit(convertToQtFormat_0, convertToQtFormat_1)
                 
 
@@ -85,9 +84,12 @@ class Thread(QThread):
                     h0, w0, ch0 = rgbImage_0.shape
                     bytesPerLine_0 = ch0 * w0
                     convertToQtFormat_0 = QImage(rgbImage_0.data, w0, h0, bytesPerLine_0, QImage.Format_RGB888)
+                    p_0 = convertToQtFormat_0.scaled(300, 250, Qt.KeepAspectRatio)
 
                     rgbImage_1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2RGB)
-                    convertToQtFormat_1 = QImage(rgbImage_1.data, w0, h0, bytesPerLine_0, QImage.Format_RGB888)
-
-                    self.changeOriginalPixmaps.emit(convertToQtFormat_0, convertToQtFormat_1)
+                    h1, w1, ch1 = rgbImage_0.shape
+                    bytesPerLine_1 = ch1 * w1
+                    convertToQtFormat_1 = QImage(rgbImage_1.data, w1, h1, bytesPerLine_1, QImage.Format_RGB888)
+                    p_1 = convertToQtFormat_1.scaled(300, 250, Qt.KeepAspectRatio)
+                    self.changeOriginalPixmaps.emit(p_0, p_1)
                     continue
