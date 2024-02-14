@@ -6,13 +6,15 @@ from PyQt5.QtWidgets    import *
 from PyQt5.QtCore       import *
 from PyQt5.QtGui        import *
 
-from threading import *
+from random import randint
 
 class Thread(QThread):
     changeShadowPixmaps = pyqtSignal(QImage, QImage)
     changeOriginalPixmaps = pyqtSignal(QImage, QImage)
     objectWidth_x_and_y = pyqtSignal(int, int)
+    objectDiametr_and_Ovality = pyqtSignal(float, float)
     loadingMSG = pyqtSignal(int)
+    changePointPos = pyqtSignal(int, int)
 
     @pyqtSlot(int)
     def setTabId(self, id: int):
@@ -24,31 +26,32 @@ class Thread(QThread):
         self.tab_id = 0
 
         self.loadingMSG.emit(0)
-        self.cap0 = cv2.VideoCapture(1)
+        self.cap0 = cv2.VideoCapture(0, cv2.CAP_V4L)
         self.cap0.set(cv2.CAP_PROP_FRAME_WIDTH, 2560)
         self.cap0.set(cv2.CAP_PROP_FRAME_HEIGHT, 1440)
         
         self.loadingMSG.emit(1)
-        self.cap1 = cv2.VideoCapture(2)
+        self.cap1 = cv2.VideoCapture(3, cv2.CAP_V4L)
         self.cap1.set(cv2.CAP_PROP_FRAME_WIDTH, 2560)
         self.cap1.set(cv2.CAP_PROP_FRAME_HEIGHT, 1440)
         self.loadingMSG.emit(2)
 
 
-        ret, image_0 = self.cap0.read()
-        self.height_0, self.width_0 = image_0.shape[:2]
-        self.res_h_0 = self.height_0//2 - 15
-
-        ret, image_1 = self.cap1.read()
-        self.height_1, self.width_1 = image_1.shape[:2]
-        self.res_h_1 = self.height_1//2 - 15
-        
-
         while True:
             ret0, self.frame0 = self.cap0.read()
             ret1, self.frame1 = self.cap1.read()
+            if self.frame0 is None or self.frame1 is None: continue
+
+            self.height_0, self.width_0 = self.frame0.shape[:2]
+            self.res_h_0 = self.height_0//2 - 15
+
+            self.height_1, self.width_1 = self.frame1.shape[:2]
+            self.res_h_1 = self.height_1//2 - 15
+        
+            
             if ret0 and ret1:
-                if self.tab_id == 1:
+                if self.tab_id == 0: self.changePointPos.emit(randint(-12, 12), randint(-12, 12))
+                elif self.tab_id == 1:
                     crop_img_0 = self.frame0[self.res_h_0:self.res_h_0 + 30, 0:0 + self.width_0]
                     crop_img_0 = cv2.cvtColor(crop_img_0, cv2.COLOR_BGR2GRAY)
 

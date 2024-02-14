@@ -5,26 +5,27 @@ from PyQt5.QtGui        import *
 import pyqtgraph as pg
 
 class MainPageWidget(QWidget):
-    def __init__(self, width: int, height: int):
+    def __init__(self):
         super().__init__()
-        self.width = width
-        self.height = height
         self.initUI()
     
     @pyqtSlot(float, float)
     def setDiametr_and_ovality(self, diametr: float, ovality: float):
         self.label_data_diametr_view.setText(diametr)
+        self.label_data_ovality_view.setText(ovality)
 
     @pyqtSlot(int, int)
-    def setPointPosition(self, pos_x, pos_y):
-        self
+    def setPointPosition(self, pos_x: int, pos_y: int):
+        self.circularWidget.setPointPos(pos_x, pos_y)
 
     def initUI(self):
         from src.MainPage.DrawCircle import DrawCircle
-        circularWidget = DrawCircle()
+        self.circularWidget = DrawCircle()
 
         label_name_diametr = QLabel("ДИАМЕТР, пиксели")
+        label_name_diametr.setAlignment(Qt.AlignCenter)
         self.label_data_diametr_view = QLabel("Что-то не работает")
+        self.label_data_diametr_view.setAlignment(Qt.AlignCenter)
         
         v_box_layout_data_diametr_view = QVBoxLayout()
         v_box_layout_data_diametr_view.addWidget(label_name_diametr, 1)
@@ -36,7 +37,9 @@ class MainPageWidget(QWidget):
 
 
         label_name_ovality = QLabel("ОВАЛЬНОСТЬ, пиксели")
+        label_name_ovality.setAlignment(Qt.AlignCenter)
         self.label_data_ovality_view = QLabel("Что-то не работает")
+        self.label_data_ovality_view.setAlignment(Qt.AlignCenter)
 
         v_box_layout_data_ovality_view = QVBoxLayout()
         v_box_layout_data_ovality_view.addWidget(label_name_ovality, 1)
@@ -52,20 +55,14 @@ class MainPageWidget(QWidget):
         v_box_layout_common_data.addWidget(data_ovality_view_frame, 1)
 
         h_box_layout_centering_widget = QHBoxLayout()
-        h_box_layout_centering_widget.addWidget(circularWidget, 5)
+        h_box_layout_centering_widget.addWidget(self.circularWidget, 5)
         h_box_layout_centering_widget.addLayout(v_box_layout_common_data, 2)
 
-
-        
-        the_graph_of_diameter_changes = pg.PlotWidget()
-        the_graph_of_diameter_changes.setBackground("w")
-        pen = pg.mkPen(color=(255, 0, 0))
-        time = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        diametr = [30, 32, 34, 32, 33, 31, 29, 32, 35, 45]
-        the_graph_of_diameter_changes.plot(time, diametr, pen=pen)
+ 
+        from src.MainPage.PlotWidget import PlotWidget
+        self.plotWidget = PlotWidget()
         h_box_layout_graph_widget = QHBoxLayout()
-        h_box_layout_graph_widget.addWidget(the_graph_of_diameter_changes, 1)
-
+        h_box_layout_graph_widget.addWidget(self.plotWidget, 1)
 
         graph_frame = QFrame()
         graph_frame.setFrameStyle(QFrame.Panel | QFrame.Plain)

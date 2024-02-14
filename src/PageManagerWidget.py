@@ -22,13 +22,13 @@ class PageManagerWidget(QWidget):
         self.loadingPageWidget = LoadingPageWidget()
 
         from src.MainPage.MainPageWidget import MainPageWidget
-        self.mainPageWidget = MainPageWidget(self.width, self.height)
+        self.mainPageWidget = MainPageWidget()
         
         from src.ShadowViewPage.ShadowViewPageWidget import ShadowViewPageWidget
-        self.shadowViewPageWidget = ShadowViewPageWidget(self.width, self.height)
+        self.shadowViewPageWidget = ShadowViewPageWidget()
 
         from src.OriginalViewPage.OriginalViewPageWidget import OriginalViewPageWidget
-        self.originalViewPageWidget = OriginalViewPageWidget(self.width, self.height)
+        self.originalViewPageWidget = OriginalViewPageWidget()
 
 
         # TabWidget ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -58,8 +58,11 @@ class PageManagerWidget(QWidget):
         th.changeShadowPixmaps.connect(self.shadowViewPageWidget.setImages)
         th.changeOriginalPixmaps.connect(self.originalViewPageWidget.setImages)
         th.objectWidth_x_and_y.connect(self.shadowViewPageWidget.setDelata_x_and_y)
+        
+        th.changePointPos.connect(self.mainPageWidget.setPointPosition)
         self.loadingPageWidget.changeAnotherPage.connect(self.setAnotherStackPage)
         th.loadingMSG.connect(self.loadingPageWidget.setLoadingMSG)
+    
     
 
         tabs.currentChanged.connect(th.setTabId)

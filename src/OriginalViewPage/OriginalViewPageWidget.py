@@ -3,9 +3,7 @@ from PyQt5.QtCore       import *
 from PyQt5.QtGui        import *
 
 class OriginalViewPageWidget(QWidget):
-    def __init__(self, width:int, height:int):
-        self.width = width
-        self.height = height
+    def __init__(self):
         super().__init__()
         self.initUI()
 
@@ -17,11 +15,11 @@ class OriginalViewPageWidget(QWidget):
     def initUI(self):
         # Вторая вкладка +++++++++++++++++++++++++++++++++++++++++++++++++++
         self.label_shadow_2 = QLabel()
-        self.label_shadow_2.setMinimumSize(int(self.width * 0.95), int(self.height * 0.5))
+        self.label_shadow_2.setMinimumSize(int(self.width() * 0.95), int(self.height() * 0.5))
         self.label_shadow_2.setScaledContents(True)
         
         self.label_shadow_3 = QLabel()
-        self.label_shadow_3.setMinimumSize(int(self.width * 0.95), int(self.height * 0.5))
+        self.label_shadow_3.setMinimumSize(int(self.width() * 0.95), int(self.height() * 0.5))
         self.label_shadow_3.setScaledContents(True)
         # Вторая вкладка ---------------------------------------------------
         self.v_box_layout_tab_1 = QVBoxLayout()
