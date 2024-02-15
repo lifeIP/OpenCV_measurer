@@ -14,9 +14,10 @@ class MainPageWidget(QWidget):
         self.label_data_diametr_view.setText(diametr)
         self.label_data_ovality_view.setText(ovality)
 
-    @pyqtSlot(int, int)
-    def setPointPosition(self, pos_x: int, pos_y: int):
+    @pyqtSlot(float, float)
+    def setPointPosition(self, pos_x: float, pos_y: float):
         self.circularWidget.setPointPos(pos_x, pos_y)
+
 
     def initUI(self):
         from src.MainPage.DrawCircle import DrawCircle

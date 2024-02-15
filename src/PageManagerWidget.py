@@ -62,9 +62,10 @@ class PageManagerWidget(QWidget):
         th.changePointPos.connect(self.mainPageWidget.setPointPosition)
         self.loadingPageWidget.changeAnotherPage.connect(self.setAnotherStackPage)
         th.loadingMSG.connect(self.loadingPageWidget.setLoadingMSG)
-    
-    
-
+        
+        self.originalViewPageWidget.changeFokus_0.connect(th.setFokus_0)
+        self.originalViewPageWidget.changeFokus_1.connect(th.setFokus_1)
+        
         tabs.currentChanged.connect(th.setTabId)
 
         self.setLayout(self.stackedLayout)

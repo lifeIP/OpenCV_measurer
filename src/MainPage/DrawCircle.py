@@ -6,14 +6,15 @@ from PyQt5.QtGui        import *
 class DrawCircle(QWidget):
     def __init__(self):
         super().__init__()
-        self.point_x_pos = 9
-        self.point_y_pos = -6
+        self.point_x_pos: int = 0
+        self.point_y_pos: int = 0
 
 
-    @pyqtSlot(int, int)
-    def setPointPos(self, point_x_pos: int, point_y_pos: int):
-        self.point_x_pos = point_x_pos
-        self.point_y_pos = point_y_pos
+    @pyqtSlot(float, float)
+    def setPointPos(self, point_x_pos: float, point_y_pos: float):
+        print(point_x_pos, point_y_pos)
+        self.point_x_pos: int = int((self.height().real // 2 - 15) * point_x_pos)
+        self.point_y_pos: int = int((self.height().real // 2 - 15) * point_y_pos)
         self.update()
 
     def paintEvent(self, event):
