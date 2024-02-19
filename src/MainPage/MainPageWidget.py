@@ -9,6 +9,10 @@ class MainPageWidget(QWidget):
         super().__init__()
         self.initUI()
     
+    @pyqtSlot(int)
+    def addPointOnPlot(self, point: int):
+        self.plotWidget.addPointOnPlot(point)
+
     @pyqtSlot(float, float)
     def setDiametr_and_ovality(self, diametr: float, ovality: float):
         self.label_data_diametr_view.setText(str(diametr))

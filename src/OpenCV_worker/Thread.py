@@ -16,6 +16,7 @@ class Thread(QThread):
     loadingMSG = pyqtSignal(int)
     changeObjectProperty = pyqtSignal(int, int, int, int)
     changeDiametr_and_ovality = pyqtSignal(float, float)
+    addPointOnPlot = pyqtSignal(int)
 
     @pyqtSlot(int)
     def setTabId(self, id: int):
@@ -46,7 +47,11 @@ class Thread(QThread):
         self.cap1.set(28, 0) 
         self.loadingMSG.emit(2)
 
-        
+        self.diametr_x = []
+        self.diametr_y = []
+        self.a_left_width = []
+        self.d_bottom_height = []
+
         while True:
             ret0, self.frame0 = self.cap0.read()
             ret1, self.frame1 = self.cap1.read()
@@ -114,11 +119,30 @@ class Thread(QThread):
                 else:
                     d_bottom_height = (part_width - x_start1)
                     
-                if self.tab_id == 0:
-                    self.changeObjectProperty.emit(a_left_width, d_bottom_height, delta_x_0, delta_x_1)
-                    self.changeDiametr_and_ovality.emit((delta_x_0+delta_x_1)/2, delta_x_0/delta_x_1)
+                if len(self.diametr_x) >= 10:
+                    print(self.diametr_x)
+                    print(self.diametr_y)
+                    
+                    if self.tab_id == 0:
+                        self.changeObjectProperty.emit(sum(self.a_left_width)//10, sum(self.d_bottom_height)//10, 
+                                                       sum(self.diametr_x)//10, sum(self.diametr_x)//10)
+                        self.changeDiametr_and_ovality.emit((sum(self.diametr_x)/10 + sum(self.diametr_y)/10)/2, 
+                                                        (sum(self.diametr_x)/10) / (sum(self.diametr_y)/10))
+                        self.addPointOnPlot.emit((sum(self.diametr_x)/10 + sum(self.diametr_y)/10)//2)
+                    
+                    self.diametr_x.clear()
+                    self.diametr_y.clear()
+                    self.a_left_width.clear()
+                    self.d_bottom_height.clear()
+                    
+                else:
+                    self.diametr_x.append(delta_x_0)
+                    self.diametr_y.append(delta_x_1)
+                    self.a_left_width.append(a_left_width)
+                    self.d_bottom_height.append(d_bottom_height)
 
-                elif self.tab_id == 1:
+                    
+                if self.tab_id == 1:
                     self.objectWidth_x_and_y.emit(delta_x_0, delta_x_1)
 
                     rgbImage_0 = cv2.cvtColor(image0, cv2.COLOR_BGR2RGB)

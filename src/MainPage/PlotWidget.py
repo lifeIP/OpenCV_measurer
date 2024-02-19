@@ -9,13 +9,20 @@ class PlotWidget(QWidget):
         super().__init__()
         self.initUI()
 
+    def addPointOnPlot(self, point: int):
+        self.diametr.append(point)
+        if len(self.diametr) > 10: self.diametr.pop(0)
+        self.data_line.setData(self.time, self.diametr)
+        
+
     def initUI(self):
         the_graph_of_diameter_changes = pg.PlotWidget()
         the_graph_of_diameter_changes.setBackground("w")
+        
         pen = pg.mkPen(color=(255, 0, 0))
-        time = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        diametr = [30, 32, 34, 32, 33, 31, 29, 32, 35, 45]
-        the_graph_of_diameter_changes.plot(time, diametr, pen=pen)
+        self.time = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        self.diametr = []
+        self.data_line = the_graph_of_diameter_changes.plot(self.time, self.diametr, pen=pen)
         h_box_layout_graph_widget = QHBoxLayout()
         h_box_layout_graph_widget.addWidget(the_graph_of_diameter_changes, 1)
         

@@ -62,7 +62,7 @@ class PageManagerWidget(QWidget):
         self.loadingPageWidget.changeAnotherPage.connect(self.setAnotherStackPage)
         th.loadingMSG.connect(self.loadingPageWidget.setLoadingMSG)
         th.changeDiametr_and_ovality.connect(self.mainPageWidget.setDiametr_and_ovality)
-        
+        th.addPointOnPlot.connect(self.mainPageWidget.addPointOnPlot)
         self.originalViewPageWidget.changeFokus_0.connect(th.setFokus_0)
         self.originalViewPageWidget.changeFokus_1.connect(th.setFokus_1)
         
