@@ -13,13 +13,12 @@ class Thread(QThread):
     changeShadowPixmaps = pyqtSignal(QImage, QImage)
     changeOriginalPixmaps = pyqtSignal(QImage, QImage)
     objectWidth_x_and_y = pyqtSignal(int, int)
-    objectDiametr_and_Ovality = pyqtSignal(float, float)
     loadingMSG = pyqtSignal(int)
     changeObjectProperty = pyqtSignal(int, int, int, int)
+    changeDiametr_and_ovality = pyqtSignal(float, float)
 
     @pyqtSlot(int)
     def setTabId(self, id: int):
-        print(id)
         self.tab_id = id
     
     @pyqtSlot(int)
@@ -89,7 +88,6 @@ class Thread(QThread):
                     for j in range(height -1, -1, -1): 
                         if image0[j,i]: x_start = i; break 
 
-                print(x_start, x_end)
                 delta_x_0 = x_end - x_start
                 x_end1 = 0
                 for i in range(width):
@@ -118,6 +116,7 @@ class Thread(QThread):
                     
                 if self.tab_id == 0:
                     self.changeObjectProperty.emit(a_left_width, d_bottom_height, delta_x_0, delta_x_1)
+                    self.changeDiametr_and_ovality.emit((delta_x_0+delta_x_1)/2, delta_x_0/delta_x_1)
 
                 elif self.tab_id == 1:
                     self.objectWidth_x_and_y.emit(delta_x_0, delta_x_1)

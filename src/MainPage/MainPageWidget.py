@@ -11,8 +11,8 @@ class MainPageWidget(QWidget):
     
     @pyqtSlot(float, float)
     def setDiametr_and_ovality(self, diametr: float, ovality: float):
-        self.label_data_diametr_view.setText(diametr)
-        self.label_data_ovality_view.setText(ovality)
+        self.label_data_diametr_view.setText(str(diametr))
+        self.label_data_ovality_view.setText(str(ovality))
 
     @pyqtSlot(float, float)
     def setPointPosition(self, pos_x: float, pos_y: float):

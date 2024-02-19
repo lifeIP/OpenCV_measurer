@@ -28,7 +28,6 @@ class DrawCircle(QWidget):
         self.point_y_pos: int = _d_bottom_height + (_f_radius_y // 2)
         self.radius_x: int = _e_radius_x // 2
         self.radius_y: int = _f_radius_y // 2
-        print("setObjectProperty >> ", self.point_x_pos, self.point_y_pos, self.radius_x, self.radius_y)
         self.update()
 
     def paintEvent(self, event):
