@@ -15,7 +15,7 @@ class Thread(QThread):
     objectWidth_x_and_y = pyqtSignal(int, int)
     objectDiametr_and_Ovality = pyqtSignal(float, float)
     loadingMSG = pyqtSignal(int)
-    changePointPos = pyqtSignal(float, float)
+    changeObjectProperty = pyqtSignal(int, int, int, int)
 
     @pyqtSlot(int)
     def setTabId(self, id: int):
@@ -36,18 +36,18 @@ class Thread(QThread):
 
         self.loadingMSG.emit(0)
         self.cap0 = cv2.VideoCapture(0)
-        self.cap0.set(cv2.CAP_PROP_FRAME_WIDTH, 1600)
-        self.cap0.set(cv2.CAP_PROP_FRAME_HEIGHT, 1200)
+        self.cap0.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        self.cap0.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
         self.cap0.set(28, 0)
 
         self.loadingMSG.emit(1)
         self.cap1 = cv2.VideoCapture(2)
-        self.cap1.set(cv2.CAP_PROP_FRAME_WIDTH, 1600)
-        self.cap1.set(cv2.CAP_PROP_FRAME_HEIGHT, 1200)
+        self.cap1.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        self.cap1.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
         self.cap1.set(28, 0) 
         self.loadingMSG.emit(2)
 
-
+        
         while True:
             ret0, self.frame0 = self.cap0.read()
             ret1, self.frame1 = self.cap1.read()
@@ -59,7 +59,7 @@ class Thread(QThread):
 
             self.height_1, self.width_1 = self.frame1.shape[:2]
             self.res_h_1 = self.height_1//2 - 15
-        
+
             
             if ret0 and ret1:
                 crop_img_0 = self.frame0[self.res_h_0:self.res_h_0 + 30, 0:0 + self.width_0]
@@ -79,53 +79,56 @@ class Thread(QThread):
 
 
                 height, width = image0.shape
-                counter: int = 0
-                x_start: int = 0
-                
+                x_end: int = 0
                 for i in range(width):
-                    counter = 0
                     for j in range(height): 
-                        counter += image0[j,i]
-                    if counter >= 4: x_start = i; break
+                        if image0[j,i]: x_end = i; break
                 
-                x_end: int = width
+                x_start: int = width
                 for i in range(width - 1, -1, -1):
-                    counter = 0
                     for j in range(height -1, -1, -1): 
-                        counter += image0[j,i]
-                    if counter >= 4: x_end = i; break
-                delta_x_0 = x_end - x_start
+                        if image0[j,i]: x_start = i; break 
 
-                counter = 0
-                x_start1 = 0
+                print(x_start, x_end)
+                delta_x_0 = x_end - x_start
+                x_end1 = 0
                 for i in range(width):
-                    counter = 0
                     for j in range(height): 
-                        counter += image1[j,i]
-                    if counter >= 4: x_start1 = i; break
-                
-                x_end1 = width
+                        if image1[j,i]: x_end1 = i; break
+
+                x_start1 = width
                 for i in range(width - 1, -1, -1):
-                    counter = 0
                     for j in range(height -1, -1, -1): 
-                        counter += image1[j,i]
-                    if counter >= 4: x_end1 = i; break
+                        if image1[j,i]: x_start1 = i; break
                 delta_x_1 = x_end1 - x_start1
                 
+                a_left_width: int = 0
+                d_bottom_height: int = 0
+
+                part_width = width // 2
+                if a_left_width < part_width:
+                    a_left_width = -(part_width - x_start)
+                else:
+                    a_left_width = (part_width - x_start)
+                
+                if d_bottom_height < part_width:
+                    d_bottom_height = -(part_width - x_start1)
+                else:
+                    d_bottom_height = (part_width - x_start1)
+                    
                 if self.tab_id == 0:
-                    # Тут нужно переделать коэффициенты************************************************************************************
-                    self.changePointPos.emit((width - x_end) - x_start, (width - x_end1) - x_start1)
+                    self.changeObjectProperty.emit(a_left_width, d_bottom_height, delta_x_0, delta_x_1)
 
                 elif self.tab_id == 1:
                     self.objectWidth_x_and_y.emit(delta_x_0, delta_x_1)
 
-                    rgbImage_0 = cv2.cvtColor(binary_threshold_0, cv2.COLOR_BGR2RGB)
+                    rgbImage_0 = cv2.cvtColor(image0, cv2.COLOR_BGR2RGB)
                     h0, w0, ch0 = rgbImage_0.shape
                     bytesPerLine_0 = ch0 * w0
                     convertToQtFormat_0 = QImage(rgbImage_0.data, w0, h0, bytesPerLine_0, QImage.Format_RGB888)
                     
 
-                    rgbImage_1 = cv2.cvtColor(binary_threshold_1, cv2.COLOR_BGR2RGB)
+                    rgbImage_1 = cv2.cvtColor(image1, cv2.COLOR_BGR2RGB)
                     h1, w1, ch1 = rgbImage_1.shape
                     bytesPerLine_1 = ch1 * w1
                     convertToQtFormat_1 = QImage(rgbImage_1.data, w1, h1, bytesPerLine_1, QImage.Format_RGB888)

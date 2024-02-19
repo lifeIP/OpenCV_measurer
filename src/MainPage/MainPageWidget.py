@@ -18,6 +18,11 @@ class MainPageWidget(QWidget):
     def setPointPosition(self, pos_x: float, pos_y: float):
         self.circularWidget.setPointPos(pos_x, pos_y)
 
+    @pyqtSlot(int, int, int, int)
+    def setObjectProperty(self, a_left_width: int, d_bottom_height: int,
+                          e_radius_x:int, f_radius_y: int):
+        self.circularWidget.setObjectProperty(a_left_width, d_bottom_height,
+                                              e_radius_x, f_radius_y)
 
     def initUI(self):
         from src.MainPage.DrawCircle import DrawCircle

@@ -8,13 +8,27 @@ class DrawCircle(QWidget):
         super().__init__()
         self.point_x_pos: int = 0
         self.point_y_pos: int = 0
+        self.radius_x: int = 0
+        self.radius_y: int = 0
 
 
-    @pyqtSlot(float, float)
-    def setPointPos(self, point_x_pos: float, point_y_pos: float):
-        print(point_x_pos, point_y_pos)
-        self.point_x_pos: int = int((self.height().real // 2 - 15) * point_x_pos)
-        self.point_y_pos: int = int((self.height().real // 2 - 15) * point_y_pos)
+
+    
+    def setObjectProperty(self, a_left_width: int, d_bottom_height: int,
+                          e_radius_x:int, f_radius_y: int):
+        _old_range = 1920
+        _new_range = self.height().real - 30
+
+        _a_left_width = int(a_left_width / _old_range * _new_range)
+        _d_bottom_height = int(d_bottom_height / _old_range * _new_range)
+        _e_radius_x = int(e_radius_x / _old_range * _new_range)
+        _f_radius_y = int(f_radius_y / _old_range * _new_range)
+
+        self.point_x_pos: int = _a_left_width + (_e_radius_x // 2)
+        self.point_y_pos: int = _d_bottom_height + (_f_radius_y // 2)
+        self.radius_x: int = _e_radius_x // 2
+        self.radius_y: int = _f_radius_y // 2
+        print("setObjectProperty >> ", self.point_x_pos, self.point_y_pos, self.radius_x, self.radius_y)
         self.update()
 
     def paintEvent(self, event):
@@ -29,16 +43,9 @@ class DrawCircle(QWidget):
         paint.setBrush(Qt.white)
         paint.drawEllipse(center, self.height().real // 2 - 15, self.height().real // 2 - 15)
 
-        # Рисование кружка в центре
-        if abs(self.point_x_pos) > 8:
-            paint.setPen(QPen(Qt.red, 1, Qt.SolidLine))
-            paint.drawEllipse(center, 8, 8)
-        else: 
-            paint.setPen(QPen(Qt.green, 1, Qt.SolidLine))
-            paint.drawEllipse(center, 8, 8)
 
-        
-        paint.setPen(QPen(Qt.green, 3, Qt.SolidLine))
-        paint.drawPoint(QPoint(center.x() + self.point_x_pos, center.y() + self.point_y_pos))
+        paint.setPen(QPen(Qt.blue, 2, Qt.SolidLine))
+        center2 = QPoint(int(self.width().real//2 + self.point_x_pos), int(self.height().real//2 + self.point_y_pos))
+        paint.drawEllipse(center2, self.radius_x, self.radius_y)
 
         paint.end()
