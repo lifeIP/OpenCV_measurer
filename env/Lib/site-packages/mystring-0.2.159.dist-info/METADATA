@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: mystring
+Version: 0.2.159
+Summary: My short description for my project.
+Home-page: https://github.com/franceme/mystring
+Author: Miles Frantz
+Author-email: frantzme@vt.edu
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.8.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: python-dateutil
+Provides-Extra: all
+Requires-Dist: ephfile ; extra == 'all'
+Requires-Dist: openpyxl ; extra == 'all'
+Requires-Dist: pandas ; extra == 'all'
+Requires-Dist: pause ; extra == 'all'
+Requires-Dist: pybryt ; extra == 'all'
+Requires-Dist: pydbhub ; extra == 'all'
+Requires-Dist: requests ; extra == 'all'
+Requires-Dist: seaborn ; extra == 'all'
+Requires-Dist: waybackpy ; extra == 'all'
+Provides-Extra: frames
+Requires-Dist: ephfile ; extra == 'frames'
+Requires-Dist: openpyxl ; extra == 'frames'
+Requires-Dist: pandas ; extra == 'frames'
+Requires-Dist: pydbhub ; extra == 'frames'
+Requires-Dist: seaborn ; extra == 'frames'
+Provides-Extra: gh
+Requires-Dist: pause ; extra == 'gh'
+Requires-Dist: requests ; extra == 'gh'
+Provides-Extra: gh_url
+Requires-Dist: pause ; extra == 'gh_url'
+Requires-Dist: requests ; extra == 'gh_url'
+Requires-Dist: waybackpy ; extra == 'gh_url'
+Provides-Extra: grading
+Requires-Dist: ephfile ; extra == 'grading'
+Requires-Dist: pybryt ; extra == 'grading'
+Provides-Extra: pkg
+Requires-Dist: requests ; extra == 'pkg'
+
+# PythonTemplate
+
+Simple Template
+
+

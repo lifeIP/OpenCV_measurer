@@ -36,15 +36,15 @@ class Thread(QThread):
 
         self.loadingMSG.emit(0)
         self.cap0 = cv2.VideoCapture(0)
-        self.cap0.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-        self.cap0.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
-        self.cap0.set(28, 0)
+        # self.cap0.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        # self.cap0.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+        # self.cap0.set(28, 0)
 
         self.loadingMSG.emit(1)
-        self.cap1 = cv2.VideoCapture(2)
-        self.cap1.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-        self.cap1.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
-        self.cap1.set(28, 0) 
+        self.cap1 = cv2.VideoCapture(1)
+        # self.cap1.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        # self.cap1.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+        # self.cap1.set(28, 0) 
         self.loadingMSG.emit(2)
 
         self.diametr_x = []
@@ -64,22 +64,18 @@ class Thread(QThread):
             self.height_1, self.width_1 = self.frame1.shape[:2]
             self.res_h_1 = self.height_1//2 - 15
 
-            
             if ret0 and ret1:
+                
                 crop_img_0 = self.frame0[self.res_h_0:self.res_h_0 + 30, 0:0 + self.width_0]
-                crop_img_0 = cv2.cvtColor(crop_img_0, cv2.COLOR_BGR2GRAY)
-
                 crop_img_1 = self.frame1[self.res_h_1:self.res_h_1 + 30, 0:0 + self.width_1]
-                crop_img_1 = cv2.cvtColor(crop_img_1, cv2.COLOR_BGR2GRAY)
-                    
-                ret_0, binary_threshold_0 = cv2.threshold(crop_img_0, 127, 255, 0)
-                ret_1, binary_threshold_1 = cv2.threshold(crop_img_1, 127, 255, 0)
 
-                cv2.bitwise_not(binary_threshold_0, binary_threshold_0)
-                cv2.bitwise_not(binary_threshold_1, binary_threshold_1)
 
-                image0 = cv2.Canny(binary_threshold_0, 70, 135)
-                image1 = cv2.Canny(binary_threshold_1, 70, 135)
+                rand_0 = cv2.inRange(crop_img_0, (20, 80, 80), (45, 255, 255))
+                rand_1 = cv2.inRange(crop_img_1, (20, 80, 80), (45, 255, 255))
+                
+    
+
+                
 
 
                 height, width = image0.shape
