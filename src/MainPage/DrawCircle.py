@@ -16,20 +16,27 @@ class DrawCircle(QWidget):
     
     def setObjectProperty(self, a_left_width: int, d_bottom_height: int,
                           e_radius_x:int, f_radius_y: int):
-        _old_range = 1920
+        _old_range = 2500
         _new_range = self.height().real - 30
 
         _a_left_width = int(a_left_width / _old_range * _new_range)
+        # print("_a_left_width:", _a_left_width)
+
         _d_bottom_height = int(d_bottom_height / _old_range * _new_range)
+        # print("_d_bottom_height:", _d_bottom_height)
+
         _e_radius_x = int(e_radius_x / _old_range * _new_range)
+        # print("_e_radius_x:", _e_radius_x)
+
         _f_radius_y = int(f_radius_y / _old_range * _new_range)
+        # print("_f_radius_y:", _f_radius_y)
 
         self.point_x_pos: int = _a_left_width + (_e_radius_x // 2)
         self.point_y_pos: int = _d_bottom_height + (_f_radius_y // 2)
         self.radius_x: int = _e_radius_x // 2
         self.radius_y: int = _f_radius_y // 2
         self.update()
-
+        
     def paintEvent(self, event):
         paint = QPainter()
         paint.begin(self)
