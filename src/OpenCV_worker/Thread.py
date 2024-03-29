@@ -82,7 +82,6 @@ class Thread(QThread):
             if frame_0 is None or frame_1 is None: continue
 
             height_0, width_0 = frame_0.shape[:2]
-            # print("width: ", width_0)
             res_h_0 = height_0//2 - 15
 
             height_1, width_1 = frame_1.shape[:2]
@@ -91,14 +90,10 @@ class Thread(QThread):
             if ret_0 and ret_1:
                 crop_img_0 = frame_0[res_h_0:res_h_0 + 30, 0:0 + width_0]
                 crop_img_1 = frame_1[res_h_1:res_h_1 + 30, 0:0 + width_1]
-                # cv2.imshow("source", frame_1)
-
+                
                 hsv_0 = cv2.cvtColor(crop_img_0, cv2.COLOR_BGR2HSV)
                 hsv_1 = cv2.cvtColor(crop_img_1, cv2.COLOR_BGR2HSV)
 
-
-                # hsv_range_0 = cv2.inRange(hsv_0, (20, 80, 80), (45, 255, 255))
-                # hsv_range_1 = cv2.inRange(hsv_1, (20, 80, 80), (45, 255, 255))
                 hsv_range_0 = cv2.inRange(hsv_0, (self.b, self.g, self.r), (self.b_1, self.g_1, self.r_1))
                 hsv_range_1 = cv2.inRange(hsv_1, (self.b, self.g, self.r), (self.b_1, self.g_1, self.r_1))
 
@@ -107,7 +102,6 @@ class Thread(QThread):
 
                 frame_0_0[hsv_range_0==255] = (0,0,255)
                 frame_1_1[hsv_range_1==255] = (0,0,255)
-
                 
 
                 rgbImage_0 = cv2.cvtColor(crop_img_0, cv2.COLOR_BGR2RGB)
@@ -152,6 +146,7 @@ class Thread(QThread):
                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+
                 for i in range(0, width_0):
                     for j in range(0, 30):
                         if(hsv_range_0[j, i] == 255 and diametr_x_start[j] == 0): diametr_x_start[j] = i
@@ -168,8 +163,10 @@ class Thread(QThread):
                                                    int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)), 
                                                    int((sum(diametr_y_end)/30)-(sum(diametr_y_start)/30)))
                    
-                    self.changeDiametr_and_ovality.emit(int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30))//2, 
-                                                    int((sum(diametr_y_end)/30)-(sum(diametr_y_start)/30))/int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)))
+                    
+                    if(diametr_x_end[0] > 1 and diametr_y_end[0] > 1):
+                        self.changeDiametr_and_ovality.emit(int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)), 
+                                                        int((sum(diametr_y_end)/30)-(sum(diametr_y_start)/30))/int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)))
                     # self.addPointOnPlot.emit((sum(self.diametr_x)/10 + int((sum(diametr_y_end)/30)-int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)))
                 
                 elif self.tab_id == 1:

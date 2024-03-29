@@ -29,7 +29,6 @@ class ShadowViewPageWidget(QWidget):
         self.label_shadow_0_delta_x.setText("ΔX: ")
         self.label_shadow_0_delta_x.setMinimumSize(int(self.width() * 0.1), int(self.height() * 0.2))
         
-        
         self.h_box_layout_0 = QHBoxLayout()
         self.h_box_layout_0.addWidget(self.label_shadow_0, 9)
         self.h_box_layout_0.addWidget(self.label_shadow_0_delta_x, 1)

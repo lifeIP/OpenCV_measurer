@@ -54,7 +54,6 @@ class PageManagerWidget(QWidget):
         self.stackedLayout.addWidget(self.loadingPageWidget)
         self.stackedLayout.addWidget(self.tabPagesWidget)
         
-
         th.changeShadowPixmaps.connect(self.shadowViewPageWidget.setImages)
         th.changeOriginalPixmaps.connect(self.originalViewPageWidget.setImages)
         th.objectWidth_x_and_y.connect(self.shadowViewPageWidget.setDelata_x_and_y)
