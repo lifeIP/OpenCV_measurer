@@ -29,7 +29,7 @@ class MainPageWidget(QWidget):
                                               e_radius_x, f_radius_y)
 
     def initUI(self):
-        from src.MainPage.DrawCircle import DrawCircle
+        from src_measurer.MainPage.DrawCircle import DrawCircle
         self.circularWidget = DrawCircle()
 
         label_name_diametr = QLabel("ДИАМЕТР, пиксели")
@@ -69,7 +69,7 @@ class MainPageWidget(QWidget):
         h_box_layout_centering_widget.addLayout(v_box_layout_common_data, 2)
 
  
-        from src.MainPage.PlotWidget import PlotWidget
+        from src_measurer.MainPage.PlotWidget import PlotWidget
         self.plotWidget = PlotWidget()
         h_box_layout_graph_widget = QHBoxLayout()
         h_box_layout_graph_widget.addWidget(self.plotWidget, 1)

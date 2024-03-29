@@ -47,7 +47,7 @@ class DrawCircle(QWidget):
         paint.drawEllipse(center, self.height().real // 2 - 15, self.height().real // 2 - 15)
 
         paint.setPen(QPen(Qt.blue, 2, Qt.SolidLine))
-        center2 = QPoint((self.width().real//2 - self.height().real//2 + self.point_x_pos), (15 + self.point_y_pos))
+        center2 = QPoint((self.width().real//2 + 15 - self.height().real//2 + self.point_x_pos), (15 + self.point_y_pos))
         paint.drawEllipse(center2, self.radius_x, self.radius_y)
 
         paint.end()

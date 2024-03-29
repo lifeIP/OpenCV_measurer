@@ -18,7 +18,7 @@ class App(QWidget):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         
-        from src.PageManagerWidget import PageManagerWidget
+        from src_measurer.PageManagerWidget import PageManagerWidget
         self.pageManagerWidget = PageManagerWidget(self.width, self.height)
         
         self.v_box_app_layout = QVBoxLayout()

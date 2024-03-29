@@ -15,19 +15,19 @@ class PageManagerWidget(QWidget):
 
     def initUI(self):
         
-        from src.OpenCV_worker.Thread import Thread
+        from src_measurer.OpenCV_worker.Thread import Thread
         th = Thread(self)
 
-        from src.LoadingPage.LoadingPageWidget import LoadingPageWidget
+        from src_measurer.LoadingPage.LoadingPageWidget import LoadingPageWidget
         self.loadingPageWidget = LoadingPageWidget()
 
-        from src.MainPage.MainPageWidget import MainPageWidget
+        from src_measurer.MainPage.MainPageWidget import MainPageWidget
         self.mainPageWidget = MainPageWidget()
         
-        from src.ShadowViewPage.ShadowViewPageWidget import ShadowViewPageWidget
+        from src_measurer.ShadowViewPage.ShadowViewPageWidget import ShadowViewPageWidget
         self.shadowViewPageWidget = ShadowViewPageWidget()
 
-        from src.OriginalViewPage.OriginalViewPageWidget import OriginalViewPageWidget
+        from src_measurer.OriginalViewPage.OriginalViewPageWidget import OriginalViewPageWidget
         self.originalViewPageWidget = OriginalViewPageWidget()
 
 
