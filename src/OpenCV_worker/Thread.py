@@ -163,11 +163,14 @@ class Thread(QThread):
                                                    int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)), 
                                                    int((sum(diametr_y_end)/30)-(sum(diametr_y_start)/30)))
                    
-                    
-                    if(diametr_x_end[0] > 1 and diametr_y_end[0] > 1):
+                    try:
                         self.changeDiametr_and_ovality.emit(int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)), 
                                                         int((sum(diametr_y_end)/30)-(sum(diametr_y_start)/30))/int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)))
-                    # self.addPointOnPlot.emit((sum(self.diametr_x)/10 + int((sum(diametr_y_end)/30)-int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)))
+                    except ZeroDivisionError:
+                        print("You tried dividing by zero")
+                    
+                    # if(diametr_x_end[0] > 1 and diametr_y_end[0] > 1):
+                         # self.addPointOnPlot.emit((sum(self.diametr_x)/10 + int((sum(diametr_y_end)/30)-int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)))
                 
                 elif self.tab_id == 1:
                     self.objectWidth_x_and_y.emit(int((sum(diametr_x_end)/30)-(sum(diametr_x_start)/30)), 
