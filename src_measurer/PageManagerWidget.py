@@ -60,6 +60,12 @@ class PageManagerWidget(QWidget):
         
         th.changeShadowPixmaps.connect(self.shadowViewPageWidget.setImages)
         th.changeOriginalPixmaps.connect(self.originalViewPageWidget.setImages)
+
+        th.changeSettingsPixmaps.connect(self.settingsPageWidget.setImages)
+        th.changeSettingsPixmaps1.connect(self.settingsPageWidget.setImages1)
+        th.changeSettingsPixmaps2.connect(self.settingsPageWidget.setImages2)
+
+
         th.objectWidth_x_and_y.connect(self.shadowViewPageWidget.setDelata_x_and_y)
         th.changeObjectProperty.connect(self.mainPageWidget.setObjectProperty)
         self.loadingPageWidget.changeAnotherPage.connect(self.setAnotherStackPage)

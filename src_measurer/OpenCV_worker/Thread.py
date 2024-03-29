@@ -10,6 +10,11 @@ from PyQt5.QtGui        import *
 from random import randint
 
 class Thread(QThread):
+    changeSettingsPixmaps = pyqtSignal(QImage, QImage)
+    changeSettingsPixmaps1 = pyqtSignal(QImage, QImage)
+    changeSettingsPixmaps2 = pyqtSignal(QImage, QImage)
+    
+
     changeShadowPixmaps = pyqtSignal(QImage, QImage)
     changeOriginalPixmaps = pyqtSignal(QImage, QImage)
     objectWidth_x_and_y = pyqtSignal(int, int)
@@ -180,3 +185,36 @@ class Thread(QThread):
                 elif self.tab_id == 2: 
                     # self.changePixelSize.emit(int(sum(diametr_x_end)/30 - sum(diametr_x_start)/30), int(sum(diametr_y_end)/30 - sum(diametr_y_start)/30))
                     self.changeOriginalPixmaps.emit(p_0, p_1)
+
+                elif self.tab_id == 3:
+                    rgbImage_0 = cv2.cvtColor(hsv_0, cv2.COLOR_BGR2RGB)
+                    h0, w0, ch0 = rgbImage_0.shape
+                    bytesPerLine_0 = ch0 * w0
+                    convertToQtFormat_0 = QImage(rgbImage_0.data, w0, h0, bytesPerLine_0, QImage.Format_RGB888)
+                    hsv_new = convertToQtFormat_0.scaled(300, 250, Qt.KeepAspectRatio)
+
+
+                    rgbImage_0_0 = cv2.cvtColor(hsv_1, cv2.COLOR_BGR2RGB)
+                    h0_0, w0_0, ch0_0 = rgbImage_0_0.shape
+                    bytesPerLine_0_0 = ch0_0 * w0_0
+                    convertToQtFormat_0_0 = QImage(rgbImage_0_0.data, w0_0, h0_0, bytesPerLine_0_0, QImage.Format_RGB888)
+                    hsv_new_1 = convertToQtFormat_0_0.scaled(300, 250, Qt.KeepAspectRatio)
+
+
+                    rgbImage_0 = cv2.cvtColor(hsv_range_0, cv2.COLOR_BGR2RGB)
+                    h0, w0, ch0 = rgbImage_0.shape
+                    bytesPerLine_0 = ch0 * w0
+                    convertToQtFormat_0 = QImage(rgbImage_0.data, w0, h0, bytesPerLine_0, QImage.Format_RGB888)
+                    hsv_range_0_new = convertToQtFormat_0.scaled(300, 250, Qt.KeepAspectRatio)
+
+
+                    rgbImage_0_0 = cv2.cvtColor(hsv_range_1, cv2.COLOR_BGR2RGB)
+                    h0_0, w0_0, ch0_0 = rgbImage_0_0.shape
+                    bytesPerLine_0_0 = ch0_0 * w0_0
+                    convertToQtFormat_0_0 = QImage(rgbImage_0_0.data, w0_0, h0_0, bytesPerLine_0_0, QImage.Format_RGB888)
+                    hsv_range_1_new = convertToQtFormat_0_0.scaled(300, 250, Qt.KeepAspectRatio)
+
+
+                    self.changeSettingsPixmaps.emit(p_0, hsv_new)
+                    self.changeSettingsPixmaps1.emit(p_1, hsv_new_1)
+                    self.changeSettingsPixmaps2.emit(hsv_range_0_new, hsv_range_1_new)
