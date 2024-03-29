@@ -30,12 +30,15 @@ class PageManagerWidget(QWidget):
         from src_measurer.OriginalViewPage.OriginalViewPageWidget import OriginalViewPageWidget
         self.originalViewPageWidget = OriginalViewPageWidget()
 
-
+        from src_measurer.SettingsPage.SettingsPageWidget import SettingsPageWidget
+        self.settingsPageWidget = SettingsPageWidget()
+        
         # TabWidget ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         tabs = QTabWidget()
         tab0 = self.shadowViewPageWidget
         tab1 = self.originalViewPageWidget
         tab2 = self.mainPageWidget
+        tab3 = self.settingsPageWidget 
 
         v_box_layout_tabs = QVBoxLayout()
         v_box_layout_tabs.addWidget(tabs)
@@ -44,6 +47,7 @@ class PageManagerWidget(QWidget):
         tabs.addTab(tab2,"Главная")
         tabs.addTab(tab0,"Тени")
         tabs.addTab(tab1,"Исходники")
+        tabs.addTab(tab3,"Настройки")
         # TabWidget --------------------------------------------------------
 
         self.tabPagesWidget = QWidget()
